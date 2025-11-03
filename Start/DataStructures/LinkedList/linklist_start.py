@@ -14,7 +14,7 @@ class Node(object):
     def set_data(self, val):
         self.val = val
 
-    def get_next(self):
+    def get_next(self) -> 'Node':
         return self.next
 
     def set_next(self, nxt):
@@ -33,18 +33,33 @@ class LinkedList(object):
     def insert(self, data):
         # TODO: insert a new node
         new_node = Node(data)
+        maybe_node = self.head
+        new_node.set_next(maybe_node)
+        self.head = new_node
+        self.count += 1
 
     def find(self, val):
         # TODO: find the first item with a given value
         item = self.head
-
+        while (item is not None):
+            if item.get_data() == val:
+                return item
+            item = item.get_next()
         return None
 
     def deleteAt(self, idx):
         # TODO: delete an item at given index
         if idx > self.count-1:
             return
-
+        elif idx == 0:
+            self.head = self.head.get_next
+        else:
+            temp_node = self.head
+            for i in range(idx-1):
+                temp_node = temp_node.get_next()
+            temp_node.set_next(temp_node.get_next().get_next())
+            self.count -= 1
+            
     def dump_list(self):
         tempnode = self.head
         while (tempnode != None):
@@ -66,8 +81,8 @@ print("Finding item: ", itemlist.find(13))
 print("Finding item: ", itemlist.find(78))
 
 # delete an item
-# print("Item count: ", itemlist.get_count())
-# itemlist.deleteAt(3)
-# print("Item count: ", itemlist.get_count())
-# print("Finding item: ", itemlist.find(38))
-# itemlist.dump_list()
+print("Item count: ", itemlist.get_count())
+itemlist.deleteAt(3)
+print("Item count: ", itemlist.get_count())
+print("Finding item: ", itemlist.find(38))
+itemlist.dump_list()
